@@ -1,28 +1,36 @@
 package com.orangejuice.orangebank_backend.dto;
 
-import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
-import java.math.BigDecimal;
 
 public class DepositRequestDTO {
-    
-    @NotNull(message = "Valor é obrigatório")
-    @DecimalMin(value = "0.01", message = "Valor deve ser maior que zero")
-    private BigDecimal amount;
-    
-    // Constructors
+    @NotNull(message = "O valor do depósito é obrigatório")
+    @Min(value = 1, message = "O valor do depósito deve ser maior que zero")
+    private Double value;
+
+    @NotNull(message = "O ID do usuário é obrigatório")
+    private Long userId;
+
     public DepositRequestDTO() {}
-    
-    public DepositRequestDTO(BigDecimal amount) {
-        this.amount = amount;
+
+    public DepositRequestDTO(Double value, Long userId) {
+        this.value = value;
+        this.userId = userId;
     }
-    
-    // Getters and Setters
-    public BigDecimal getAmount() {
-        return amount;
+
+    public Double getValue() {
+        return value;
     }
-    
-    public void setAmount(BigDecimal amount) {
-        this.amount = amount;
+
+    public void setValue(Double value) {
+        this.value = value;
+    }
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 } 
