@@ -124,10 +124,52 @@ public class AccountService {
         }
         if ("INTERNAL".equals(request.getTransferType())) {
             // Transferência interna: entre conta corrente e investimento
-            // Aqui você pode implementar a lógica para transferir entre contas do próprio usuário
-            // Exemplo: descontar da conta corrente e adicionar na conta investimento
-            // (Necessário ter acesso à conta investimento do usuário)
-            throw new UnsupportedOperationException("Transferência interna não implementada neste exemplo.");
+            if (request.getDirection() == null ||
+                !(request.getDirection().equals("TO_INVESTMENT") || request.getDirection().equals("TO_CURRENT"))) {
+                throw new IllegalArgumentException("Direção da transferência interna deve ser TO_INVESTMENT ou TO_CURRENT.");
+            }
+            // Buscar conta investimento do usuário
+            if (user.getInvestmentAccount() == null) {
+                throw new IllegalArgumentException("Conta Investimento não encontrada para o usuário.");
+            }
+            if (request.getDirection().equals("TO_INVESTMENT")) {
+                // Corrente -> Investimento
+                if (sourceAccount.getBalance().compareTo(value) < 0) {
+                    throw new IllegalArgumentException("Saldo insuficiente na Conta Corrente.");
+                }
+                sourceAccount.setBalance(sourceAccount.getBalance().subtract(value));
+                user.getInvestmentAccount().setBalance(user.getInvestmentAccount().getBalance().add(value));
+                currentAccountRepository.save(sourceAccount);
+                // Supondo que há um investmentAccountRepository, salvar também
+                // investmentAccountRepository.save(user.getInvestmentAccount());
+            } else {
+                // Investimento -> Corrente
+                if (user.getInvestmentAccount().getBalance().compareTo(value) < 0) {
+                    throw new IllegalArgumentException("Saldo insuficiente na Conta Investimento.");
+                }
+                user.getInvestmentAccount().setBalance(user.getInvestmentAccount().getBalance().subtract(value));
+                sourceAccount.setBalance(sourceAccount.getBalance().add(value));
+                currentAccountRepository.save(sourceAccount);
+                // Supondo que há um investmentAccountRepository, salvar também
+                // investmentAccountRepository.save(user.getInvestmentAccount());
+            }
+            // Registrar movimentação
+            Transaction transaction = new Transaction();
+            transaction.setUser(user);
+            transaction.setType(TransactionType.INTERNAL_TRANSFER);
+            transaction.setAmount(value);
+            transaction.setNetAmount(value);
+            transaction.setCreatedAt(LocalDateTime.now());
+            transaction.setDescription("Transferência interna: " + request.getDirection());
+            transaction.setSourceAccount(sourceAccount);
+            // Não setar destinationAccount se destino for InvestmentAccount
+            transactionRepository.save(transaction);
+            return new DepositResponseDTO(
+                    "Transferência interna realizada com sucesso!",
+                    sourceAccount.getBalance(),
+                    transaction.getCreatedAt(),
+                    value
+            );
         } else if ("EXTERNAL".equals(request.getTransferType())) {
             // Transferência externa: para outra conta corrente
             if (request.getDestinationAccountNumber() == null) {

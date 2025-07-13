@@ -18,13 +18,17 @@ public class TransferRequestDTO {
     @Pattern(regexp = "^[0-9]{6}$", message = "Número da conta deve ter 6 dígitos")
     private String destinationAccountNumber;
     
+    @Pattern(regexp = "^(TO_INVESTMENT|TO_CURRENT)?$", message = "Direção deve ser TO_INVESTMENT ou TO_CURRENT para transferência interna")
+    private String direction;
+    
     // Constructors
     public TransferRequestDTO() {}
     
-    public TransferRequestDTO(BigDecimal amount, String transferType, String destinationAccountNumber) {
+    public TransferRequestDTO(BigDecimal amount, String transferType, String destinationAccountNumber, String direction) {
         this.amount = amount;
         this.transferType = transferType;
         this.destinationAccountNumber = destinationAccountNumber;
+        this.direction = direction;
     }
     
     // Getters and Setters
@@ -50,5 +54,13 @@ public class TransferRequestDTO {
     
     public void setDestinationAccountNumber(String destinationAccountNumber) {
         this.destinationAccountNumber = destinationAccountNumber;
+    }
+
+    public String getDirection() {
+        return direction;
+    }
+
+    public void setDirection(String direction) {
+        this.direction = direction;
     }
 } 
