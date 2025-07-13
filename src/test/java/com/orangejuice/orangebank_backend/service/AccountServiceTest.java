@@ -44,6 +44,7 @@ public class AccountServiceTest {
         user = new User();
         user.setId(1L);
         currentAccount = new CurrentAccount();
+        currentAccount.setId(1L); // Setar o id para evitar NPE
         currentAccount.setAccountNumber("123456-7");
         currentAccount.setBalance(new BigDecimal("500.00"));
         user.setCurrentAccount(currentAccount);
@@ -141,5 +142,57 @@ public class AccountServiceTest {
             accountService.transfer(1L, request);
         });
         assertEquals("O valor da transferência deve ser maior que zero.", ex.getMessage());
+    }
+
+    @Test
+    void testDeposit_InvalidValue() {
+        DepositRequestDTO request = new DepositRequestDTO();
+        request.setUserId(1L);
+        request.setValue(0.0);
+        // Não mockar userRepository.findById(1L) aqui
+        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class, () -> {
+            accountService.deposit(request);
+        });
+        assertEquals("O valor do depósito deve ser maior que zero.", ex.getMessage());
+    }
+
+    @Test
+    void testWithdraw_InvalidValue() {
+        DepositRequestDTO request = new DepositRequestDTO();
+        request.setUserId(1L);
+        request.setValue(-10.0);
+        // Não mockar userRepository.findById(1L) aqui
+        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class, () -> {
+            accountService.withdraw(request);
+        });
+        assertEquals("O valor do saque deve ser maior que zero.", ex.getMessage());
+    }
+
+    @Test
+    void testTransfer_DestinationAccountNotFound() {
+        com.orangejuice.orangebank_backend.dto.TransferRequestDTO request = new com.orangejuice.orangebank_backend.dto.TransferRequestDTO();
+        request.setAmount(new java.math.BigDecimal("100.00"));
+        request.setTransferType("EXTERNAL");
+        request.setDestinationAccountNumber("999999-9");
+        when(userRepository.findById(1L)).thenReturn(Optional.of(user));
+        when(currentAccountRepository.findByAccountNumber("999999-9")).thenReturn(Optional.empty());
+        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class, () -> {
+            accountService.transfer(1L, request);
+        });
+        assertEquals("Conta de destino não encontrada.", ex.getMessage());
+    }
+
+    @Test
+    void testTransfer_ToOwnAccount() {
+        com.orangejuice.orangebank_backend.dto.TransferRequestDTO request = new com.orangejuice.orangebank_backend.dto.TransferRequestDTO();
+        request.setAmount(new java.math.BigDecimal("100.00"));
+        request.setTransferType("EXTERNAL");
+        request.setDestinationAccountNumber(currentAccount.getAccountNumber());
+        when(userRepository.findById(1L)).thenReturn(Optional.of(user));
+        when(currentAccountRepository.findByAccountNumber(currentAccount.getAccountNumber())).thenReturn(Optional.of(currentAccount));
+        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class, () -> {
+            accountService.transfer(1L, request);
+        });
+        assertEquals("Não é possível transferir para a própria conta.", ex.getMessage());
     }
 } 
