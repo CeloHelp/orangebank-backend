@@ -66,6 +66,37 @@ public class AuthServiceTest {
     }
 
     @Test
+    void testRegister_EmailAlreadyExists() {
+        when(userRepository.findByEmail("joao@email.com")).thenReturn(Optional.of(user));
+        RegisterRequestDTO request = new RegisterRequestDTO();
+        request.setName("João Teste");
+        request.setEmail("joao@email.com");
+        request.setCpf("123.456.789-00");
+        request.setBirthDate("1990-01-01");
+        request.setPassword("senha123");
+        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class, () -> {
+            authService.register(request);
+        });
+        assertEquals("Email já cadastrado", ex.getMessage());
+    }
+
+    @Test
+    void testRegister_CpfAlreadyExists() {
+        when(userRepository.findByEmail("novo@email.com")).thenReturn(Optional.empty());
+        when(userRepository.findByCpf("123.456.789-00")).thenReturn(Optional.of(user));
+        RegisterRequestDTO request = new RegisterRequestDTO();
+        request.setName("João Teste");
+        request.setEmail("novo@email.com");
+        request.setCpf("123.456.789-00");
+        request.setBirthDate("1990-01-01");
+        request.setPassword("senha123");
+        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class, () -> {
+            authService.register(request);
+        });
+        assertEquals("CPF já cadastrado", ex.getMessage());
+    }
+
+    @Test
     void testLogin_Success() {
         LoginRequestDTO loginRequest = new LoginRequestDTO();
         loginRequest.setEmail("joao@email.com");
@@ -77,5 +108,30 @@ public class AuthServiceTest {
         AuthResponseDTO response = authService.login(loginRequest);
         assertNotNull(response);
         assertEquals("fake-jwt-token", response.getToken());
+    }
+
+    @Test
+    void testLogin_UserNotFound() {
+        when(userRepository.findByEmail("naoexiste@email.com")).thenReturn(Optional.empty());
+        LoginRequestDTO loginRequest = new LoginRequestDTO();
+        loginRequest.setEmail("naoexiste@email.com");
+        loginRequest.setPassword("senha123");
+        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class, () -> {
+            authService.login(loginRequest);
+        });
+        assertEquals("Credenciais inválidas", ex.getMessage());
+    }
+
+    @Test
+    void testLogin_WrongPassword() {
+        when(userRepository.findByEmail("joao@email.com")).thenReturn(Optional.of(user));
+        when(passwordEncoder.matches("senhaErrada", "senhaCriptografada")).thenReturn(false);
+        LoginRequestDTO loginRequest = new LoginRequestDTO();
+        loginRequest.setEmail("joao@email.com");
+        loginRequest.setPassword("senhaErrada");
+        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class, () -> {
+            authService.login(loginRequest);
+        });
+        assertEquals("Credenciais inválidas", ex.getMessage());
     }
 } 
