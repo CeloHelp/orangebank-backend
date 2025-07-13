@@ -25,6 +25,9 @@ public class User {
     @Column(name = "birth_date", nullable = false)
     private LocalDate birthDate;
     
+    @Column(nullable = false)
+    private String password;
+    
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private CurrentAccount currentAccount;
     
@@ -86,6 +89,14 @@ public class User {
     
     public void setBirthDate(LocalDate birthDate) {
         this.birthDate = birthDate;
+    }
+    
+    public String getPassword() {
+        return password;
+    }
+    
+    public void setPassword(String password) {
+        this.password = password;
     }
     
     public CurrentAccount getCurrentAccount() {
