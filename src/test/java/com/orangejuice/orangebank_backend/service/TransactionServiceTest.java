@@ -108,4 +108,22 @@ public class TransactionServiceTest {
             // transactionService.externalTransfer(1L, new BigDecimal("50.00"), "654321-0");
         });
     }
+
+    @Test
+    void testDeposit_UserNotFound() {
+        when(userRepository.findById(99L)).thenReturn(Optional.empty());
+        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class, () -> {
+            transactionService.deposit(99L, new BigDecimal("100.00"));
+        });
+        assertEquals("Usuário não encontrado", ex.getMessage());
+    }
+
+    @Test
+    void testWithdraw_UserNotFound() {
+        when(userRepository.findById(99L)).thenReturn(Optional.empty());
+        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class, () -> {
+            transactionService.withdraw(99L, new BigDecimal("100.00"));
+        });
+        assertEquals("Usuário não encontrado", ex.getMessage());
+    }
 } 
