@@ -27,7 +27,7 @@ public class TransactionController {
             @PathVariable Long userId,
             @Valid @RequestBody DepositRequestDTO request) {
         try {
-            TransactionDTO transaction = transactionService.deposit(userId, request.getAmount());
+            TransactionDTO transaction = transactionService.deposit(userId, java.math.BigDecimal.valueOf(request.getValue()));
             return ResponseEntity.ok(transaction);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().build();
@@ -39,7 +39,7 @@ public class TransactionController {
             @PathVariable Long userId,
             @Valid @RequestBody DepositRequestDTO request) {
         try {
-            TransactionDTO transaction = transactionService.withdraw(userId, request.getAmount());
+            TransactionDTO transaction = transactionService.withdraw(userId, java.math.BigDecimal.valueOf(request.getValue()));
             return ResponseEntity.ok(transaction);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().build();

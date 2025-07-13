@@ -47,17 +47,18 @@ public class AccountService {
         // Registrar movimentação
         Transaction transaction = new Transaction();
         transaction.setUser(user);
-        transaction.setCurrentAccount(account);
         transaction.setType(TransactionType.DEPOSIT);
-        transaction.setValue(value);
-        transaction.setDateTime(LocalDateTime.now());
+        transaction.setAmount(value);
+        transaction.setNetAmount(value);
+        transaction.setCreatedAt(LocalDateTime.now());
         transaction.setDescription("Depósito na Conta Corrente");
+        transaction.setDestinationAccount(account);
         transactionRepository.save(transaction);
 
         return new DepositResponseDTO(
                 "Depósito realizado com sucesso!",
                 account.getBalance(),
-                transaction.getDateTime(),
+                transaction.getCreatedAt(),
                 value
         );
     }
