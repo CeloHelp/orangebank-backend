@@ -9,6 +9,7 @@ import com.orangejuice.orangebank_backend.repository.AssetRepository;
 import com.orangejuice.orangebank_backend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import jakarta.annotation.PostConstruct;
@@ -28,6 +29,9 @@ public class DataLoaderService {
     
     @Autowired
     private UserService userService;
+    
+    @Autowired
+    private PasswordEncoder passwordEncoder;
     
     private final ObjectMapper objectMapper = new ObjectMapper();
     
@@ -62,6 +66,9 @@ public class DataLoaderService {
                     String birthDateStr = userNode.get("birthDate").asText();
                     LocalDate birthDate = LocalDate.parse(birthDateStr, DateTimeFormatter.ISO_LOCAL_DATE);
                     user.setBirthDate(birthDate);
+                    
+                    // Definir senha padrão para usuários mock
+                    user.setPassword(passwordEncoder.encode("123456"));
                     
                     // Check if user already exists before creating
                     if (!userService.userExists(user.getEmail(), user.getCpf())) {
