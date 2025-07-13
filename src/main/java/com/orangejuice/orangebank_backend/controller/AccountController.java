@@ -34,4 +34,19 @@ public class AccountController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
+
+    @PostMapping("/withdraw")
+    @Operation(summary = "Realizar saque na Conta Corrente", description = "Permite ao usuário sacar um valor de sua Conta Corrente.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Saque realizado com sucesso"),
+            @ApiResponse(responseCode = "400", description = "Dados inválidos ou erro de validação")
+    })
+    public ResponseEntity<?> withdraw(@Valid @RequestBody DepositRequestDTO request) {
+        try {
+            DepositResponseDTO response = accountService.withdraw(request);
+            return ResponseEntity.ok(response);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
 } 

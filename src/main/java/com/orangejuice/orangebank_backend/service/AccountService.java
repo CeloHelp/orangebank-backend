@@ -62,4 +62,44 @@ public class AccountService {
                 value
         );
     }
+
+    @Transactional
+    public DepositResponseDTO withdraw(DepositRequestDTO request) {
+        if (request.getValue() == null || request.getValue() <= 0) {
+            throw new IllegalArgumentException("O valor do saque deve ser maior que zero.");
+        }
+        Optional<User> userOpt = userRepository.findById(request.getUserId());
+        if (userOpt.isEmpty()) {
+            throw new IllegalArgumentException("Usuário não encontrado.");
+        }
+        User user = userOpt.get();
+        CurrentAccount account = user.getCurrentAccount();
+        if (account == null) {
+            throw new IllegalArgumentException("Conta Corrente não encontrada para o usuário.");
+        }
+        BigDecimal value = BigDecimal.valueOf(request.getValue());
+        if (account.getBalance().compareTo(value) < 0) {
+            throw new IllegalArgumentException("Saldo insuficiente para realizar o saque.");
+        }
+        account.setBalance(account.getBalance().subtract(value));
+        currentAccountRepository.save(account);
+
+        // Registrar movimentação
+        Transaction transaction = new Transaction();
+        transaction.setUser(user);
+        transaction.setType(TransactionType.WITHDRAWAL);
+        transaction.setAmount(value);
+        transaction.setNetAmount(value);
+        transaction.setCreatedAt(LocalDateTime.now());
+        transaction.setDescription("Saque na Conta Corrente");
+        transaction.setSourceAccount(account);
+        transactionRepository.save(transaction);
+
+        return new DepositResponseDTO(
+                "Saque realizado com sucesso!",
+                account.getBalance(),
+                transaction.getCreatedAt(),
+                value
+        );
+    }
 } 
