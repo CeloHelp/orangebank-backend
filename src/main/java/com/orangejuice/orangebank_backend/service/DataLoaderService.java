@@ -4,6 +4,8 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.orangejuice.orangebank_backend.domain.Asset;
 import com.orangejuice.orangebank_backend.domain.AssetType;
+import com.orangejuice.orangebank_backend.domain.CurrentAccount;
+import com.orangejuice.orangebank_backend.domain.InvestmentAccount;
 import com.orangejuice.orangebank_backend.domain.User;
 import com.orangejuice.orangebank_backend.repository.AssetRepository;
 import com.orangejuice.orangebank_backend.repository.UserRepository;
@@ -34,6 +36,13 @@ public class DataLoaderService {
     private PasswordEncoder passwordEncoder;
     
     private final ObjectMapper objectMapper = new ObjectMapper();
+    
+    private String generateAccountNumber() {
+        // Gerar número de conta aleatório (formato: 12345678-9)
+        int accountNumber = (int) (Math.random() * 90000000) + 10000000;
+        int digit = (int) (Math.random() * 10);
+        return accountNumber + "-" + digit;
+    }
     
     @PostConstruct
     public void loadInitialData() {
@@ -72,7 +81,20 @@ public class DataLoaderService {
                     
                     // Check if user already exists before creating
                     if (!userService.userExists(user.getEmail(), user.getCpf())) {
-                        userService.createUser(user);
+                        // Criar contas bancárias
+                        CurrentAccount currentAccount = new CurrentAccount();
+                        currentAccount.setAccountNumber(generateAccountNumber());
+                        currentAccount.setBalance(BigDecimal.ZERO);
+                        currentAccount.setUser(user);
+                        user.setCurrentAccount(currentAccount);
+                        
+                        InvestmentAccount investmentAccount = new InvestmentAccount();
+                        investmentAccount.setAccountNumber(generateAccountNumber());
+                        investmentAccount.setBalance(BigDecimal.ZERO);
+                        investmentAccount.setUser(user);
+                        user.setInvestmentAccount(investmentAccount);
+                        
+                        userRepository.save(user);
                     }
                 } catch (Exception e) {
                     System.err.println("Erro ao criar usuário: " + e.getMessage());
