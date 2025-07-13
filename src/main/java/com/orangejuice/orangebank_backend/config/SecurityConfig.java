@@ -33,9 +33,8 @@ public class SecurityConfig {
                 .requestMatchers("/api/auth/**").permitAll()
                 .requestMatchers("/swagger-ui/**", "/swagger-ui.html", "/api-docs/**").permitAll()
                 .requestMatchers("/h2-console/**").permitAll()
-                .requestMatchers("/api/accounts/deposit").permitAll() // Libera só o depósito
-                .requestMatchers("/api/accounts/withdraw").permitAll() // Libera só o saque
-                .anyRequest().authenticated()
+                .requestMatchers("/api/users/**").authenticated() // Apenas usuários exige autenticação
+                .anyRequest().permitAll() // Todo o resto é público
             )
             .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
             .headers(headers -> headers.frameOptions().disable()); // Para H2 Console
