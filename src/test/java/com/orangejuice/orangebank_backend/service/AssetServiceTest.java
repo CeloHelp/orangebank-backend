@@ -83,6 +83,15 @@ public class AssetServiceTest {
     }
 
     @Test
+    void testBuyAsset_UserNotFound() {
+        when(userRepository.findById(99L)).thenReturn(Optional.empty());
+        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class, () -> {
+            assetService.buyAsset(99L, "BOIB3", 1);
+        });
+        assertEquals("Usuário não encontrado", ex.getMessage());
+    }
+
+    @Test
     void testSellAsset_Success() {
         String symbol = "BOIB3";
         int quantity = 5;
@@ -117,6 +126,16 @@ public class AssetServiceTest {
             assetService.sellAsset(1L, symbol, quantity);
         });
         assertEquals("Quantidade insuficiente para venda", ex.getMessage());
+    }
+
+    @Test
+    void testSellAsset_AssetNotFound() {
+        when(userRepository.findById(1L)).thenReturn(Optional.of(user));
+        when(assetRepository.findByUserIdAndSymbol(1L, "BOIB3")).thenReturn(Optional.empty());
+        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class, () -> {
+            assetService.sellAsset(1L, "BOIB3", 1);
+        });
+        assertEquals("Ativo não encontrado na carteira", ex.getMessage());
     }
 
     @Test
