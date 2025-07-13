@@ -1,5 +1,6 @@
 package com.orangejuice.orangebank_backend.dto;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
@@ -15,6 +16,7 @@ public class TransferRequestDTO {
     @Pattern(regexp = "^(INTERNAL|EXTERNAL)$", message = "Tipo deve ser INTERNAL ou EXTERNAL")
     private String transferType;
     
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     @Pattern(regexp = "^[0-9]{6}$", message = "Número da conta deve ter 6 dígitos")
     private String destinationAccountNumber;
     
@@ -51,11 +53,11 @@ public class TransferRequestDTO {
     public String getDestinationAccountNumber() {
         return destinationAccountNumber;
     }
-    
+
     public void setDestinationAccountNumber(String destinationAccountNumber) {
         this.destinationAccountNumber = destinationAccountNumber;
     }
-
+    
     public String getDirection() {
         return direction;
     }
