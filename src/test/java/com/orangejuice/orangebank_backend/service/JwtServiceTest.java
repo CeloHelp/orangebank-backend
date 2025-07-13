@@ -46,4 +46,20 @@ public class JwtServiceTest {
         Claims claims = jwtService.extractClaim(token, c -> c);
         assertEquals("usuarioClaim", claims.getSubject());
     }
+
+    @Test
+    void testExtractUsername_InvalidToken() {
+        String invalidToken = "invalid.token.value";
+        assertThrows(Exception.class, () -> {
+            jwtService.extractUsername(invalidToken);
+        });
+    }
+
+    @Test
+    void testExtractClaim_InvalidToken() {
+        String invalidToken = "invalid.token.value";
+        assertThrows(Exception.class, () -> {
+            jwtService.extractClaim(invalidToken, c -> c.getSubject());
+        });
+    }
 } 
