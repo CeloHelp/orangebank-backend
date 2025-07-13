@@ -281,6 +281,33 @@
       "dailyVariation": -0.5
     }
   ],
+  "funds": [
+    {
+      "symbol": "FUND01",
+      "name": "Fundo Alpha",
+      "sector": "Multimercado",
+      "currentPrice": 100.00,
+      "dailyVariation": 0.5
+    }
+  ],
+  "cdbs": [
+    {
+      "symbol": "CDB123",
+      "name": "CDB XPTO",
+      "sector": "Renda Fixa",
+      "currentPrice": 1000.00,
+      "dailyVariation": 0.1
+    }
+  ],
+  "treasuries": [
+    {
+      "symbol": "TESOURO1",
+      "name": "Tesouro Selic",
+      "sector": "Renda Fixa",
+      "currentPrice": 1050.00,
+      "dailyVariation": 0.08
+    }
+  ],
   "fixedIncome": [
     {
       "id": "CDB001",

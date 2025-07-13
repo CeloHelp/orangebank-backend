@@ -41,6 +41,11 @@ public class UserController {
     }
     
     @GetMapping("/{id}")
+    @Operation(summary = "Buscar usuário por ID", description = "Retorna um usuário específico pelo ID.")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Usuário encontrado com sucesso"),
+        @ApiResponse(responseCode = "404", description = "Usuário não encontrado")
+    })
     public ResponseEntity<UserDTO> getUserById(@PathVariable Long id) {
         Optional<UserDTO> user = userService.getUserById(id);
         return user.map(ResponseEntity::ok)
@@ -48,6 +53,11 @@ public class UserController {
     }
     
     @GetMapping("/search")
+    @Operation(summary = "Buscar usuário por email ou CPF", description = "Retorna um usuário específico pelo email ou CPF informado.")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Usuário encontrado com sucesso"),
+        @ApiResponse(responseCode = "404", description = "Usuário não encontrado")
+    })
     public ResponseEntity<UserDTO> getUserByEmailOrCpf(@RequestParam String emailOrCpf) {
         Optional<UserDTO> user = userService.getUserByEmailOrCpf(emailOrCpf);
         return user.map(ResponseEntity::ok)
@@ -55,6 +65,11 @@ public class UserController {
     }
     
     @PostMapping
+    @Operation(summary = "Criar novo usuário", description = "Cria um novo usuário no sistema.")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Usuário criado com sucesso"),
+        @ApiResponse(responseCode = "400", description = "Dados inválidos ou usuário já existe")
+    })
     public ResponseEntity<UserDTO> createUser(@RequestBody User user) {
         try {
             User createdUser = userService.createUser(user);
@@ -72,6 +87,11 @@ public class UserController {
     }
     
     @GetMapping("/{id}/balances")
+    @Operation(summary = "Consultar saldos do usuário", description = "Retorna os saldos das contas corrente e investimento do usuário.")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Saldos retornados com sucesso"),
+        @ApiResponse(responseCode = "404", description = "Usuário não encontrado")
+    })
     public ResponseEntity<List<AccountBalanceDTO>> getUserBalances(@PathVariable Long id) {
         Optional<User> userOpt = userRepository.findById(id);
         if (userOpt.isEmpty()) {

@@ -2,6 +2,7 @@ package com.orangejuice.orangebank_backend.controller;
 
 import com.orangejuice.orangebank_backend.dto.DepositRequestDTO;
 import com.orangejuice.orangebank_backend.dto.DepositResponseDTO;
+import com.orangejuice.orangebank_backend.dto.TransferRequestDTO;
 import com.orangejuice.orangebank_backend.service.AccountService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -45,6 +46,23 @@ public class AccountController {
         try {
             DepositResponseDTO response = accountService.withdraw(request);
             return ResponseEntity.ok(response);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @PostMapping("/{userId}/transfer")
+    @Operation(summary = "Realizar transferência", description = "Permite ao usuário transferir valores para outra conta ou entre suas próprias contas.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Transferência realizada com sucesso"),
+            @ApiResponse(responseCode = "400", description = "Dados inválidos ou erro de validação")
+    })
+    public ResponseEntity<?> transfer(@PathVariable Long userId, @Valid @RequestBody TransferRequestDTO request) {
+        try {
+            DepositResponseDTO response = accountService.transfer(userId, request);
+            return ResponseEntity.ok(response);
+        } catch (UnsupportedOperationException e) {
+            return ResponseEntity.status(501).body(e.getMessage());
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
