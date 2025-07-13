@@ -69,7 +69,7 @@ public class TransactionController {
     }
     
     @PostMapping("/{userId}/transfer/internal")
-    public ResponseEntity<TransactionDTO> internalTransfer(
+    public ResponseEntity<?> internalTransfer(
             @PathVariable Long userId,
             @RequestParam BigDecimal amount,
             @RequestParam String direction) {
@@ -77,7 +77,7 @@ public class TransactionController {
             TransactionDTO transaction = transactionService.internalTransfer(userId, amount, direction);
             return ResponseEntity.ok(transaction);
         } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().build();
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
     
