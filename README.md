@@ -96,7 +96,7 @@ cd orangebank-backend
 A aplicação está disponível publicamente em:
 
 - **URL base:**  
-  [http://orange-env.eba-iqe4dcr4.us-east-2.elasticbeanstalk.com](http://orange-env.eba-iqe4dcr4.us-east-2.elasticbeanstalk.com)
+  [http://orange-env.eba-iqe4dcr4.us-east-2.elasticbeanstalk.com](http://orange-env.eba-iqe4dcr4.us-east-2.elasticbeanstalk.com/swagger-ui/index.html#/)
 
 > **Ao acessar o link principal, você será automaticamente redirecionado para a documentação Swagger da API!**
 
