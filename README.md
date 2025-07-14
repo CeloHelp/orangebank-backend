@@ -91,6 +91,51 @@ cd orangebank-backend
   - Username: `sa`
   - Password: `password`
 
+## 🌐 Deploy em Produção (AWS Elastic Beanstalk)
+
+A aplicação está disponível publicamente em:
+
+- **URL base:**  
+  [http://orange-env.eba-iqe4dcr4.us-east-2.elasticbeanstalk.com](http://orange-env.eba-iqe4dcr4.us-east-2.elasticbeanstalk.com)
+
+### Documentação Swagger
+- [Swagger UI](http://orange-env.eba-iqe4dcr4.us-east-2.elasticbeanstalk.com/swagger-ui.html)
+
+### Endpoints principais (produção)
+
+- **Cadastro de usuário:**  
+  `POST /api/auth/register`
+- **Login:**  
+  `POST /api/auth/login`
+
+#### Exemplo de requisição para cadastro de usuário (produção):
+```json
+{
+  "name": "João da Silva",
+  "email": "joao@email.com",
+  "cpf": "12345678900",
+  "birthDate": "1990-01-01",
+  "password": "senha123"
+}
+```
+
+#### Testando endpoints em produção
+Você pode testar os endpoints diretamente pelo Swagger UI ou usando ferramentas como Postman/curl:
+
+```bash
+curl -X POST http://orange-env.eba-iqe4dcr4.us-east-2.elasticbeanstalk.com/api/auth/register \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "João da Silva",
+    "email": "joao@email.com",
+    "cpf": "12345678900",
+    "birthDate": "1990-01-01",
+    "password": "senha123"
+  }'
+```
+
+---
+
 ## 📚 Documentação da API
 
 ### 👥 Usuários
