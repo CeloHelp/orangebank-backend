@@ -355,12 +355,13 @@ Este projeto foi desenvolvido para o hackathon da Orange Juice Tech.
 
 **🍊 OrangeJuiceBank** - Transformando investimentos em realidade! 🚀 
 
-## ⚙️ CI/CD Automático
+## ⚙️ CI/CD Automático (Desabilitado para corrigir erros)
 
 A aplicação possui **deploy automático (CI/CD)** configurado com GitHub Actions:
 - A cada push na branch `main`, o pipeline executa testes, build e faz o deploy automático para a AWS Elastic Beanstalk.
 - O workflow está em `.github/workflows/deploy.yml`.
 - As credenciais de deploy são gerenciadas com secrets do GitHub.
+- 
 
 ### Link de produção atualizado
 - **Acesse a API em produção:**
