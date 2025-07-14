@@ -34,8 +34,8 @@ jobs:
         with:
           aws_access_key: ${{ secrets.AWS_ACCES_KEY_ID }}
           aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          application_name: orangebank-backend
-          environment_name: orange-env
+          application_name: Orange
+          environment_name: Orange-env
           region: us-east-2
           version_label: ${{ github.run_number }}
           deployment_package: orangebank-deploy.zip 
