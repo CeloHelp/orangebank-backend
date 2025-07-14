@@ -18,7 +18,16 @@ public class OpenApiConfig {
         return new OpenAPI()
                 .info(new Info()
                         .title("OrangeBank API")
-                        .description("API de mini banco de investimentos - OrangeBank")
+                        .description("<b>API RESTful para o mini banco de investimentos OrangeBank.</b><br><br>" +
+                                "Permite cadastro, autenticação, movimentações financeiras, investimentos e muito mais.\n" +
+                                "\n<b>Principais recursos:</b>\n<ul>\n" +
+                                "<li>Cadastro e autenticação de usuários</li>\n" +
+                                "<li>Operações de conta corrente e investimento</li>\n" +
+                                "<li>Compra e venda de ativos</li>\n" +
+                                "<li>Histórico de transações</li>\n" +
+                                "<li>Dashboard financeiro</li>\n" +
+                                "</ul>\n" +
+                                "\n<b>Documentação interativa disponível no Swagger UI.</b>")
                         .version("1.0.0")
                         .contact(new Contact()
                                 .name("OrangeBank Team")
@@ -32,8 +41,8 @@ public class OpenApiConfig {
                                 .url("http://localhost:8080")
                                 .description("Servidor de Desenvolvimento"),
                         new Server()
-                                .url("https://api.orangebank.com")
-                                .description("Servidor de Produção")
+                                .url("http://orange-env.eba-iqe4dcr4.us-east-2.elasticbeanstalk.com")
+                                .description("Servidor de Produção (AWS)")
                 ));
     }
 } 

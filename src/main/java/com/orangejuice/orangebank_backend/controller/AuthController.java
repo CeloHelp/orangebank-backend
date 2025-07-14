@@ -9,6 +9,9 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.ExampleObject;
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -24,13 +27,26 @@ public class AuthController {
     private AuthService authService;
     
     @PostMapping("/register")
-    @Operation(summary = "Registrar novo usuário", description = "Cria uma nova conta de usuário com contas bancárias")
+    @Operation(
+        summary = "Registrar novo usuário",
+        description = "Cria uma nova conta de usuário com contas bancárias.",
+        requestBody = @RequestBody(
+            required = true,
+            content = @Content(
+                mediaType = "application/json",
+                examples = @ExampleObject(
+                    name = "Exemplo de cadastro",
+                    value = "{\n  \"name\": \"João da Silva\",\n  \"email\": \"joao@email.com\",\n  \"cpf\": \"12345678900\",\n  \"birthDate\": \"1990-01-01\",\n  \"password\": \"senha123\"\n}"
+                )
+            )
+        )
+    )
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "Usuário registrado com sucesso"),
         @ApiResponse(responseCode = "400", description = "Dados inválidos ou usuário já existe"),
         @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
     })
-    public ResponseEntity<AuthResponseDTO> register(@Valid @RequestBody RegisterRequestDTO request) {
+    public ResponseEntity<AuthResponseDTO> register(@Valid @org.springframework.web.bind.annotation.RequestBody RegisterRequestDTO request) {
         try {
             AuthResponseDTO response = authService.register(request);
             return ResponseEntity.ok(response);
