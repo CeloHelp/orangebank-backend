@@ -98,6 +98,8 @@ A aplicação está disponível publicamente em:
 - **URL base:**  
   [http://orange-env.eba-iqe4dcr4.us-east-2.elasticbeanstalk.com](http://orange-env.eba-iqe4dcr4.us-east-2.elasticbeanstalk.com)
 
+> **Ao acessar o link principal, você será automaticamente redirecionado para a documentação Swagger da API!**
+
 ### Documentação Swagger
 - [Swagger UI](http://orange-env.eba-iqe4dcr4.us-east-2.elasticbeanstalk.com/swagger-ui.html)
 
