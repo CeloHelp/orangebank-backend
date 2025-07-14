@@ -2,6 +2,44 @@
 
 Este é o backend da aplicação **OrangeJuiceBank**, desenvolvido para o hackathon da comunidade Orange Juice Tech. A aplicação simula um mini banco de investimentos com operações financeiras completas.
 
+---
+
+## 🧪 Testes e Cobertura
+
+### Rodando os testes
+```bash
+./gradlew test
+```
+
+### Gerando o relatório de cobertura (JaCoCo)
+```bash
+./gradlew test jacocoTestReport
+```
+O relatório HTML será gerado em:
+```
+build/jacocoHtml/index.html
+```
+Abra esse arquivo no navegador para visualizar a cobertura detalhada.
+
+**Cobertura da camada de service:**
+- ✅ **85% de cobertura de código** (meta superada!)
+- TransactionService: 98%
+- CustomUserDetailsService: 100%
+- UserService: 81%
+- DataLoaderService: 91%
+- AuthService: 100%
+
+---
+
+## 📖 Swagger / OpenAPI
+
+A documentação interativa da API está disponível em:
+```
+http://localhost:8080/swagger-ui.html
+```
+
+---
+
 ## 🚀 Funcionalidades Implementadas
 
 ### ✅ Funcionalidades Obrigatórias
