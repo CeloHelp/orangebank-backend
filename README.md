@@ -93,15 +93,10 @@ cd orangebank-backend
 
 ## 🌐 Deploy em Produção (AWS Elastic Beanstalk)
 
-A aplicação está disponível publicamente em:
-
-- **URL base:**  
-  [http://orange-env.eba-iqe4dcr4.us-east-2.elasticbeanstalk.com](http://orange-env.eba-iqe4dcr4.us-east-2.elasticbeanstalk.com)
-
-> **Ao acessar o link principal, você será automaticamente redirecionado para a documentação Swagger da API!**
+A aplicação com sua documentação  está disponível publicamente em:
 
 ### Documentação Swagger
-- [Swagger UI](http://orange-env.eba-iqe4dcr4.us-east-2.elasticbeanstalk.com/swagger-ui.html)
+(http://orange-env.eba-iqe4dcr4.us-east-2.elasticbeanstalk.com/swagger-ui.html)
 
 ### Endpoints principais (produção)
 
@@ -355,12 +350,13 @@ Este projeto foi desenvolvido para o hackathon da Orange Juice Tech.
 
 **🍊 OrangeJuiceBank** - Transformando investimentos em realidade! 🚀 
 
-## ⚙️ CI/CD Automático
+## ⚙️ CI/CD Automático (Desabilitado para corrigir erros)
 
 A aplicação possui **deploy automático (CI/CD)** configurado com GitHub Actions:
 - A cada push na branch `main`, o pipeline executa testes, build e faz o deploy automático para a AWS Elastic Beanstalk.
 - O workflow está em `.github/workflows/deploy.yml`.
 - As credenciais de deploy são gerenciadas com secrets do GitHub.
+- 
 
 ### Link de produção atualizado
 - **Acesse a API em produção:**
@@ -374,4 +370,4 @@ A aplicação possui **deploy automático (CI/CD)** configurado com GitHub Actio
 
 Para documentar o processo de deploy e evitar exceder os limites do Free Tier da AWS, foi criado um vídeo demonstrando todo o procedimento. A aplicação foi parada após o deploy para não gerar custos adicionais.
 
-Assista ao vídeo aqui: [Deploy na AWS - YouTube](https://youtu.be/pbbW0ubYCcM) 
+Assista ao vídeo aqui: [Deploy na AWS - YouTube](https://youtu.be/pbbW0ubYCcM)
