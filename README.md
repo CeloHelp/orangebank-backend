@@ -369,3 +369,9 @@ A aplicação possui **deploy automático (CI/CD)** configurado com GitHub Actio
   [http://orange-env.eba-iqe4dcr4.us-east-2.elasticbeanstalk.com/swagger-ui.html](http://orange-env.eba-iqe4dcr4.us-east-2.elasticbeanstalk.com/swagger-ui.html)
 
 --- 
+
+## Vídeo de Deploy na AWS
+
+Para documentar o processo de deploy e evitar exceder os limites do Free Tier da AWS, foi criado um vídeo demonstrando todo o procedimento. A aplicação foi parada após o deploy para não gerar custos adicionais.
+
+Assista ao vídeo aqui: [Deploy na AWS - YouTube](https://youtu.be/pbbW0ubYCcM) 
